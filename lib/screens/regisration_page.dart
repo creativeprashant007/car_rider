@@ -36,9 +36,7 @@ class RegistrationPage extends StatelessWidget {
         .catchError((error) {
       Navigator.of(context).pop();
       PlatformException thisEx = error;
-      showSnackBar(
-        thisEx.message.toString(),
-      );
+      showSnackBar(thisEx.message.toString(), context);
     });
     if (user.user != null) {
       DatabaseReference newUserRef =
@@ -57,7 +55,7 @@ class RegistrationPage extends StatelessWidget {
     }
   }
 
-  void showSnackBar(String title) {
+  void showSnackBar(String title, BuildContext context) {
     final snackBar = SnackBar(
       content: Text(
         title,
@@ -65,9 +63,7 @@ class RegistrationPage extends StatelessWidget {
         style: TextStyle(fontSize: 15.0),
       ),
     );
-    _scffoldkey.currentState!.showSnackBar(
-      snackBar,
-    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -180,34 +176,27 @@ class RegistrationPage extends StatelessWidget {
                               await (Connectivity().checkConnectivity());
                           if (connectivityResult != ConnectivityResult.mobile &&
                               connectivityResult != ConnectivityResult.wifi) {
-                            showSnackBar(
-                              'No Internet connection',
-                            );
+                            showSnackBar('No Internet connection', context);
                             return;
                           }
                           if (_fullNameController.text.length < 3) {
                             showSnackBar(
-                              'Full name must be more than three character',
-                            );
+                                'Full name must be more than three character',
+                                context);
                             return;
                           }
                           if (_phoneController.text.length < 10) {
-                            showSnackBar(
-                              'Phone must be 10 digit',
-                            );
+                            showSnackBar('Phone must be 10 digit', context);
                             return;
                           }
 
                           if (!_emailControllerController.text.contains('@')) {
-                            showSnackBar(
-                              'invalid email address',
-                            );
+                            showSnackBar('invalid email address', context);
                             return;
                           }
                           if (_passwordController.text.length < 6) {
                             showSnackBar(
-                              'Password at least 6 character',
-                            );
+                                'Password at least 6 character', context);
                             return;
                           }
                           _registerUser(context);
@@ -215,7 +204,7 @@ class RegistrationPage extends StatelessWidget {
                         color: BrandColors.colorGreen,
                         title: 'REGISTER',
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               LoginPage.id, (route) => false);

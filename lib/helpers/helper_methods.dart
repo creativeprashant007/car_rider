@@ -22,9 +22,9 @@ class HelperMethods {
     String userId = currentFirebaseUser!.uid;
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.reference().child('users/$userId');
-    databaseReference.once().then((DataSnapshot snapshot) {
-      if (snapshot.value != null) {
-        currentUserInfo = User.fromSnapsot(snapshot);
+    databaseReference.once().then((DatabaseEvent snapshot) {
+      if (snapshot.snapshot.value != null) {
+        currentUserInfo = User.fromSnapsot(snapshot.snapshot);
         print(
             'her is my full ianem +++++++++++++++++++++++|||||||||||||||||||||||||||||||||||');
         print('my name is${currentUserInfo!.fullName}');

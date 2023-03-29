@@ -46,8 +46,8 @@ class PredictionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.all(0),
+    return TextButton(
+      
       onPressed: () {
         getPlaceDetails(
           '${predictions.place_id}',

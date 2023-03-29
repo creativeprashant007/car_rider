@@ -50,8 +50,8 @@ class _LoginPageState extends State<LoginPage> {
       DatabaseReference userRef = FirebaseDatabase.instance.reference().child(
             'users/${user.user!.uid}',
           );
-      userRef.once().then((DataSnapshot snapshot) {
-        if (snapshot.value != null) {
+      userRef.once().then((DatabaseEvent snapshot) {
+        if (snapshot.snapshot.value != null) {
           Navigator.pushNamedAndRemoveUntil(
               context, MainPage.id, (route) => false);
         }
@@ -67,9 +67,7 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(fontSize: 15.0),
       ),
     );
-    _scffoldkey.currentState!.showSnackBar(
-      snackBar,
-    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -171,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: BrandColors.colorGreen,
                         title: 'LOGIN',
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               RegistrationPage.id, (route) => false);
