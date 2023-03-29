@@ -62,169 +62,171 @@ class _SearchPageState extends State<SearchPage> {
     String address = Provider.of<AppData>(context).pickupAddress!.placeName;
     _pickUpController.text = address;
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 210,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 5.0,
-                  spreadRadius: 0.5,
-                  offset: Offset(0.7, 0.7),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 24.0,
-                top: 35,
-                right: 24,
-                bottom: 20.0,
-              ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Stack(
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(Icons.arrow_back)),
-                      Center(
-                        child: Text(
-                          'Set Destination',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: 'Brand-Bold',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 18.0,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/pickicon.png',
-                        height: 16,
-                        width: 16,
-                      ),
-                      SizedBox(
-                        width: 18.0,
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: BrandColors.colorLightGrayFair,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: TextField(
-                              controller: _pickUpController,
-                              onChanged: (value) {},
-                              decoration: InputDecoration(
-                                hintText: 'Pickup location',
-                                fillColor: BrandColors.colorLightGrayFair,
-                                filled: true,
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: const EdgeInsets.only(
-                                  left: 10,
-                                  top: 8,
-                                  bottom: 8,
-                                  right: 8,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/desticon.png',
-                        height: 16,
-                        width: 16,
-                      ),
-                      SizedBox(
-                        width: 18.0,
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: BrandColors.colorLightGrayFair,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: TextField(
-                              onChanged: (value) {
-                                print(
-                                    'we are inside un change method++++++++++++++______________');
-                                print(value);
-                                SearchPlace(value);
-                              },
-                              controller: _destinationController,
-                              focusNode: focusDestination,
-                              decoration: InputDecoration(
-                                hintText: 'Where to?',
-                                fillColor: BrandColors.colorLightGrayFair,
-                                filled: true,
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: const EdgeInsets.only(
-                                  left: 10,
-                                  top: 8,
-                                  bottom: 8,
-                                  right: 8,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 210,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 5.0,
+                    spreadRadius: 0.5,
+                    offset: Offset(0.7, 0.7),
                   ),
                 ],
               ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 24.0,
+                  top: 35,
+                  right: 24,
+                  bottom: 20.0,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Stack(
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(Icons.arrow_back)),
+                        Center(
+                          child: Text(
+                            'Set Destination',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'Brand-Bold',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18.0,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/pickicon.png',
+                          height: 16,
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: 18.0,
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: BrandColors.colorLightGrayFair,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: TextField(
+                                controller: _pickUpController,
+                                onChanged: (value) {},
+                                decoration: InputDecoration(
+                                  hintText: 'Pickup location',
+                                  fillColor: BrandColors.colorLightGrayFair,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  contentPadding: const EdgeInsets.only(
+                                    left: 10,
+                                    top: 8,
+                                    bottom: 8,
+                                    right: 8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/desticon.png',
+                          height: 16,
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: 18.0,
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: BrandColors.colorLightGrayFair,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: TextField(
+                                onChanged: (value) {
+                                  print(
+                                      'we are inside un change method++++++++++++++______________');
+                                  print(value);
+                                  SearchPlace(value);
+                                },
+                                controller: _destinationController,
+                                focusNode: focusDestination,
+                                decoration: InputDecoration(
+                                  hintText: 'Where to?',
+                                  fillColor: BrandColors.colorLightGrayFair,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  contentPadding: const EdgeInsets.only(
+                                    left: 10,
+                                    top: 8,
+                                    bottom: 8,
+                                    right: 8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
 
-          //prdiction list view
-          destinatinPredictionList.length > 0
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 16.0,
-                  ),
-                  child: ListView.separated(
-                    padding: EdgeInsets.all(0.0),
-                    itemBuilder: (context, index) {
-                      return PredictionTile(
-                          predictions: destinatinPredictionList[index]);
-                    },
-                    separatorBuilder: (context, index) {
-                      return BrandDivider();
-                    },
-                    itemCount: destinatinPredictionList.length,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                  ),
-                )
-              : Container()
-        ],
+            //prdiction list view
+            destinatinPredictionList.length > 0
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
+                    ),
+                    child: ListView.separated(
+                      padding: EdgeInsets.all(0.0),
+                      itemBuilder: (context, index) {
+                        return PredictionTile(
+                            predictions: destinatinPredictionList[index]);
+                      },
+                      separatorBuilder: (context, index) {
+                        return BrandDivider();
+                      },
+                      itemCount: destinatinPredictionList.length,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                    ),
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }

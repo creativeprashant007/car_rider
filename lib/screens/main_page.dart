@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Set<Polyline> _polyline = {};
   Set<Marker> _markers = {};
   Set<Circle> _circles = {};
-  StreamSubscription<Event>? rideSubscription;
+  StreamSubscription<DatabaseEvent>? rideSubscription;
   double tripSheetHeight = 0; //(Platform.isAndroid):275:300
 
   BitmapDescriptor? nearByIcons;
@@ -999,28 +999,29 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     };
 
     rideRef!.set(rideMap);
-    rideSubscription = rideRef!.onValue.listen((event) async {
+    rideSubscription = rideRef!.onValue.listen((DatabaseEvent? event) async {
       print("arrived here is driver arriced $status");
-      if (event.snapshot.value == null) {
+      if (event!.snapshot.value == null) {
         return;
       }
-      if (event.snapshot.value['car_details'] != null) {
+
+      if ((event.snapshot.value as dynamic)['car_details'] != null) {
         setState(() {
-          driverCarDetails = event.snapshot.value['car_details'];
+          driverCarDetails = (event.snapshot.value as dynamic)['car_details'];
         });
       }
-      if (event.snapshot.value['driver_name'] != null) {
+      if ((event.snapshot.value as dynamic)['driver_name'] != null) {
         setState(() {
-          driverFullName = event.snapshot.value['driver_name'];
+          driverFullName = (event.snapshot.value as dynamic)['driver_name'];
         });
       }
-      if (event.snapshot.value['driver_phone'] != null) {
+      if ((event.snapshot.value as dynamic)['driver_phone'] != null) {
         setState(() {
-          driverPhoneNumber = event.snapshot.value['driver_phone'];
+          driverPhoneNumber = (event.snapshot.value as dynamic)['driver_phone'];
         });
       }
-      if (event.snapshot.value['status'] != null) {
-        status = event.snapshot.value['status'];
+      if ((event.snapshot.value as dynamic)['status'] != null) {
+        status = (event.snapshot.value as dynamic)['status'];
         setState(() {});
       }
       if (status == "accepted") {
@@ -1030,11 +1031,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         removeGeofireMarkers();
       }
       //get and use driver location updates
-      if (event.snapshot.value['driver_location'] != null) {
+      if ((event.snapshot.value as dynamic)['driver_location'] != null) {
         double driverLat = double.parse(
-            event.snapshot.value['driver_location']['latitude'].toString());
+            (event.snapshot.value as dynamic)['driver_location']['latitude']
+                .toString());
         double driverLng = double.parse(
-            event.snapshot.value['driver_location']['lognitude'].toString());
+            (event.snapshot.value as dynamic)['driver_location']['lognitude']
+                .toString());
         LatLng driverLocation = LatLng(driverLat, driverLng);
         print("arrived here is driver arriced $status");
         if (status == "accepted") {
@@ -1053,14 +1056,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         }
       }
       if (status == "ended") {
-        if (event.snapshot.value["fares"] != null) {
-          int fares = int.parse(event.snapshot.value["fares"].toString());
+        if ((event.snapshot.value as dynamic)["fares"] != null) {
+          int fares =
+              int.parse((event.snapshot.value as dynamic)["fares"].toString());
           var response = await showDialog(
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 return CollectPayment(
-                  paymentMethod: "${event.snapshot.value['payment_method']}",
+                  paymentMethod:
+                      "${(event.snapshot.value as dynamic)['payment_method']}",
                   fares: fares,
                 );
               });
@@ -1239,9 +1244,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     DatabaseReference tokenRef = FirebaseDatabase.instance
         .reference()
         .child("drivers/${drivers.key}/token");
-    tokenRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value != null) {
-        String token = snapshot.value.toString();
+    tokenRef.once().then((DatabaseEvent snapshot) {
+      if (snapshot.snapshot.value != null) {
+        String token = snapshot.snapshot.value.toString();
         HelperMethods.sendNotification(
             context: context, rideId: rideRef!.key, token: token);
       } else {

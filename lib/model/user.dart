@@ -15,8 +15,8 @@ class User {
 
   User.fromSnapsot(DataSnapshot snapshot) {
     id = snapshot.key;
-    phone = snapshot.value['phone'];
-    email = snapshot.value['email'];
-    fullName = snapshot.value['fullname'];
+    phone = (snapshot.value as dynamic)['phone'];
+    email = (snapshot.value as dynamic)['email'];
+    fullName = (snapshot.value as dynamic)['fullname'];
   }
 }
