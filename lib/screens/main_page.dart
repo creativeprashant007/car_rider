@@ -11,7 +11,6 @@ import 'package:cab_rider/model/near_by_drivers.dart';
 import 'package:cab_rider/provider/app_data.dart';
 import 'package:cab_rider/rider_variables/ride_variables.dart';
 import 'package:cab_rider/screens/search_page.dart';
-import 'package:cab_rider/styles/styles.dart';
 import 'package:cab_rider/widgets/brand_divider.dart';
 import 'package:cab_rider/widgets/collect_payment_dialog.dart';
 import 'package:cab_rider/widgets/no_driver_dialog.dart';
@@ -26,6 +25,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/app_drawer.dart';
 
 class MainPage extends StatefulWidget {
   static const String id = 'mainpage';
@@ -113,12 +114,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     startGeoFireListener();
   }
 
-  // static final CameraPosition _kLake = CameraPosition(
-  //     bearing: 192.8334901395799,
-  //     target: LatLng(37.43296265331129, -122.08832357078792),
-  //     tilt: 59.440717697143555,
-  //     zoom: 19.151926040649414);
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -186,90 +181,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     createMarker();
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Container(
-        width: 250.0,
-        color: Colors.white,
-        child: Drawer(
-          child: ListView(
-            children: [
-              Container(
-                color: Colors.white,
-                height: 160,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/user_icon.png',
-                        height: 60,
-                        width: 60,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Prashant',
-                            style: TextStyle(
-                                fontSize: 20, fontFamily: 'Brand-Bold'),
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Text('View Profile')
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              BrandDivider(),
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: Icon(OMIcons.cardGiftcard),
-                title: Text(
-                  'Free Rides',
-                  style: kDrawerItemStyle,
-                ),
-              ),
-              ListTile(
-                leading: Icon(OMIcons.payment),
-                title: Text(
-                  'Payments',
-                  style: kDrawerItemStyle,
-                ),
-              ),
-              ListTile(
-                leading: Icon(OMIcons.history),
-                title: Text(
-                  'Ride History',
-                  style: kDrawerItemStyle,
-                ),
-              ),
-              ListTile(
-                leading: Icon(OMIcons.contactSupport),
-                title: Text(
-                  'Support',
-                  style: kDrawerItemStyle,
-                ),
-              ),
-              ListTile(
-                leading: Icon(OMIcons.info),
-                title: Text(
-                  'About',
-                  style: kDrawerItemStyle,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: AppDrawer(),
       body: Stack(
         children: [
           GoogleMap(
@@ -294,7 +206,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             },
           ),
 
-          //Menue buttons
           Positioned(
             top: 44,
             left: 20,
@@ -334,7 +245,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             right: 0,
             bottom: 0,
             child: AnimatedSize(
-              vsync: this,
               duration: Duration(microseconds: 150),
               curve: Curves.easeIn,
               child: Container(
@@ -494,7 +404,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   right: 0,
                   bottom: 0,
                   child: AnimatedSize(
-                    vsync: this,
                     duration: Duration(milliseconds: 150),
                     child: Container(
                       height: rideDetailsSheetHeight,
@@ -974,7 +883,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   void createRideRequest() {
-    rideRef = FirebaseDatabase.instance.reference().child("rideRequest").push();
+    rideRef = FirebaseDatabase.instance.ref().child("rideRequest").push();
     var pickUp = Provider.of<AppData>(context, listen: false).pickupAddress;
     var destination =
         Provider.of<AppData>(context, listen: false).destinatinAddress;
@@ -1237,13 +1146,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   void notifyDriver(NearByDrivers drivers) {
-    DatabaseReference driverTripRef = FirebaseDatabase.instance
-        .reference()
-        .child("drivers/${drivers.key}/newtrip");
+    DatabaseReference driverTripRef =
+        FirebaseDatabase.instance.ref().child("drivers/${drivers.key}/newtrip");
     driverTripRef.set(rideRef!.key);
-    DatabaseReference tokenRef = FirebaseDatabase.instance
-        .reference()
-        .child("drivers/${drivers.key}/token");
+    DatabaseReference tokenRef =
+        FirebaseDatabase.instance.ref().child("drivers/${drivers.key}/token");
     tokenRef.once().then((DatabaseEvent snapshot) {
       if (snapshot.snapshot.value != null) {
         String token = snapshot.snapshot.value.toString();
